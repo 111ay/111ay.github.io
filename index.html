@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -3300,4 +3301,3308 @@
         window.onload = init;
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看世界 · 星尘游乐园</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Quicksand', 'Arial', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 235, 240, 0.9), rgba(255, 255, 255, 0.9));
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* 开场动画样式 */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 235, 240, 0.9), rgba(255, 255, 255, 0.9));
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        #loading-content {
+            text-align: center;
+            position: relative;
+        }
+        
+        #loading-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff6b9d;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: rgba(255, 245, 250, 0.9);
+            padding: 15px 25px;
+            border-radius: 25px;
+            border: 2px solid #ffd1dc;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.2);
+        }
+        
+        #loading-subtitle {
+            font-size: 18px;
+            color: #ff6b9d;
+            margin-bottom: 40px;
+            background: rgba(255, 245, 250, 0.9);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #ffd1dc;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.2);
+        }
+        
+        #loading-text {
+            font-size: 16px;
+            color: #ff6b9d;
+            margin-bottom: 10px;
+            background: rgba(255, 245, 250, 0.9);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #ffd1dc;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.2);
+        }
+        
+        #loading-percentage {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b9d;
+            margin-top: 10px;
+            background: rgba(255, 245, 250, 0.9);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #ffd1dc;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.2);
+        }
+        
+        #progress-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #f8d7e2;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ff8fb3);
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 10px;
+        }
+        
+        /* 漂浮元素 */
+        .floating-element {
+            position: absolute;
+            font-size: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                transform: translateY(-20px) translateX(10px);
+                opacity: 1;
+            }
+            30% {
+                transform: translateY(-60px) translateX(-10px);
+            }
+            50% {
+                transform: translateY(-100px) translateX(10px);
+            }
+            70% {
+                transform: translateY(-140px) translateX(-10px);
+            }
+            90% {
+                transform: translateY(-180px) translateX(10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-220px) translateX(0);
+                opacity: 0;
+            }
+        }
+        
+        .floating-message .floating-nickname {
+            font-weight: bold;
+            color: #ff6b9d;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .floating-message .floating-content {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* 加载完成后的按钮 */
+        #menu-buttons {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 25px;
+            border: 2px solid #ffd1dc;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+        
+        .menu-button {
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(255, 107, 157, 0.4);
+        }
+        
+        /* 地球场景 */
+        #earth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 100;
+            display: none;
+        }
+        
+        /* UI 面板 */
+        #ui-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 200;
+            display: none;
+        }
+        
+        .ui-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+        
+        /* 返回按钮 */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.3);
+            z-index: 200;
+            display: none;
+        }
+        
+        /* 底部赠言 */
+        #message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: #ff6b9d;
+            font-size: 14px;
+            z-index: 200;
+            display: none;
+        }
+        
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: #ff6b9d;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* 像素加载动画 */
+        #pixel-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 400;
+            display: none;
+        }
+        
+        #pixel-text {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #pixel-bar {
+            width: 300px;
+            height: 20px;
+            background: #333;
+            border: 2px solid #fff;
+            position: relative;
+        }
+        
+        #pixel-fill {
+            height: 100%;
+            background: #0f0;
+            width: 0%;
+        }
+        
+        /* 相册样式 */
+        #album {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffebf0 0%, #fff 100%);
+            z-index: 400;
+            display: none;
+            flex-direction: column;
+        }
+        
+        #album-header {
+            padding: 40px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f8d7e2;
+        }
+        
+        #album-city-name {
+            font-size: 36px;
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        #album-city-chinese {
+            font-size: 24px;
+            color: #ff8fb3;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+        
+        #album-main-photo {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        #album-main-photo {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        #album-main-photo img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        #album-gallery {
+            padding: 20px;
+            overflow-x: auto;
+            display: flex;
+            gap: 15px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        
+        #album-gallery::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .gallery-item {
+            flex: 0 0 200px;
+            height: 150px;
+            scroll-snap-align: start;
+            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-caption {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .gallery-item-caption {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .photo-caption-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #f8d7e2;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .photo-navigation {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+        
+        .nav-button {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            background: linear-gradient(135deg, #ff8fb3, #ff6b9d);
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(255, 107, 157, 0.4);
+        }
+        
+        .nav-button.prev {
+            margin-left: 20px;
+        }
+        
+        .nav-button.next {
+            margin-right: 20px;
+        }
+        
+        #album-text {
+            padding: 20px;
+            text-align: center;
+            color: #ff6b9d;
+            font-size: 18px;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #album-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #f8d7e2;
+        }
+        
+        #close-album {
+            padding: 10px 30px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.3);
+        }
+        
+        #edit-button {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            padding: 10px 30px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(255, 107, 157, 0.3);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            #album-city-name {
+                font-size: 28px;
+            }
+            
+            #album-city-chinese {
+                font-size: 20px;
+            }
+            
+            #album-main-photo {
+                padding: 10px;
+            }
+            
+            #album-main-photo img {
+                max-height: 50vh;
+            }
+            
+            #album-gallery {
+                padding: 10px;
+            }
+            
+            .gallery-item {
+                flex: 0 0 120px;
+                height: 80px;
+            }
+            
+            #album-text {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+        
+        /* 编辑模态框 */
+        #edit-modal,
+        #edit-city-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            display: none;
+        }
+        
+        #edit-content,
+        #edit-city-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        #edit-content h3,
+        #edit-city-content h3 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        #edit-content input,
+        #edit-content textarea,
+        #edit-city-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f8d7e2;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        #edit-content textarea {
+            height: 100px;
+            resize: none;
+        }
+        
+        #edit-content input[type="file"] {
+            border: 2px dashed #f8d7e2;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        #edit-content input[type="file"]:hover {
+            border-color: #ff6b9d;
+        }
+        
+        #edit-city-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        #save-city-edit,
+        #cancel-city-edit,
+        #delete-city {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #save-city-edit {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            color: white;
+        }
+        
+        #cancel-city-edit {
+            background: #f8d7e2;
+            color: #ff6b9d;
+        }
+        
+        #photo-list {
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .photo-item {
+            background: #f8d7e2;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .photo-item img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .photo-item .photo-quote {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .photo-item .delete-photo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #ff6b9d;
+        }
+        
+        #add-photo-section {
+            margin-bottom: 20px;
+        }
+        
+        #add-photo {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #edit-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        #save-edit,
+        #cancel-edit {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #save-edit {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            color: white;
+        }
+        
+        #cancel-edit {
+            background: #f8d7e2;
+            color: #ff6b9d;
+        }
+        
+        /* OR模式样式 */
+        #or-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffebf0 0%, #fff 100%);
+            z-index: 300;
+            display: none;
+            padding: 20px;
+        }
+        
+        #or-container {
+            display: flex;
+            height: 100%;
+            gap: 20px;
+        }
+        
+        #audio-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #message-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #audio-title {
+            font-size: 24px;
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        
+        #audio-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        #play-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+        }
+        
+        #waveform {
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .wave-bar {
+            width: 10px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border-radius: 5px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% {
+                height: 20px;
+            }
+            50% {
+                height: 80px;
+            }
+        }
+        
+        #message-title {
+            font-size: 24px;
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        #message-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            background: #f8d7e2;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .message-bubble .nickname {
+            font-weight: bold;
+            color: #ff6b9d;
+            margin-bottom: 5px;
+        }
+        
+        .message-bubble .content {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .message-bubble .timestamp {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+        }
+        
+        .message-bubble .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #ff6b9d;
+        }
+        
+        #message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        #message-form input,
+        #message-form textarea {
+            padding: 10px;
+            border: 1px solid #f8d7e2;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        #message-form textarea {
+            height: 100px;
+            resize: none;
+        }
+        
+        #send-message {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        /* 添加城市按钮 */
+        .add-city-button {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            padding: 15px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+            z-index: 200;
+            display: none;
+        }
+        
+        /* 上传祝福语按钮 */
+        .upload-wishes-button {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+            z-index: 200;
+            display: none;
+        }
+        
+        /* 模态框样式 */
+        #add-city-modal,
+        #upload-wishes-modal,
+        #upload-audio-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            display: none;
+        }
+        
+        #add-city-content,
+        #upload-wishes-content,
+        #upload-audio-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        #add-city-content h3,
+        #upload-wishes-content h3,
+        #upload-audio-content h3 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        #add-city-content input,
+        #add-city-content textarea,
+        #upload-wishes-content input,
+        #upload-audio-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f8d7e2;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        #add-city-content textarea {
+            height: 100px;
+            resize: none;
+        }
+        
+        #add-photo-section {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        #add-photo-to-city {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        #add-photo-to-city:hover {
+            background-color: #ff8fb3;
+        }
+        
+        #city-photos-list {
+            margin: 15px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #f8d7e2;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .city-photo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .city-photo-item img {
+            width: 50px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        
+        .city-photo-item .photo-info {
+            flex: 1;
+        }
+        
+        .city-photo-item .photo-url {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .city-photo-item .photo-caption {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .city-photo-item .remove-photo {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .city-photo-item .remove-photo:hover {
+            background-color: #ff5252;
+        }
+        
+        #add-city-buttons,
+        #upload-wishes-buttons,
+        #upload-audio-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        #save-city,
+        #cancel-add-city,
+        #upload-wishes,
+        #cancel-upload-wishes,
+        #upload-audio,
+        #cancel-upload-audio {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #save-city,
+        #upload-wishes,
+        #upload-audio {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fb3);
+            color: white;
+        }
+        
+        #cancel-add-city,
+        #cancel-upload-wishes,
+        #cancel-upload-audio {
+            background: #f8d7e2;
+            color: #ff6b9d;
+        }
+        
+        /* 地球场景背景 */
+        #earth-container {
+            background: linear-gradient(135deg, rgba(255, 235, 240, 0.9), rgba(255, 255, 255, 0.9));
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* OR模式背景 */
+        #or-mode {
+            background: linear-gradient(135deg, rgba(255, 235, 240, 0.9), rgba(255, 255, 255, 0.9));
+            background-image: url('https://via.placeholder.com/1920x1080?text=Put+Your+Image+Here');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* 标语样式 */
+        #slogan {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #ff6b9d;
+            z-index: 200;
+            display: none;
+        }
+        
+        #slogan h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        #slogan h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        #slogan p {
+            font-size: 14px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 拖动提示 */
+        #drag-hint {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: #ff6b9d;
+            font-size: 14px;
+            z-index: 200;
+            display: none;
+        }
+        
+        /* 城市标记样式 */
+        .city-marker {
+            position: relative;
+        }
+        
+        .city-marker::after {
+            content: '⭐';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            #or-container {
+                flex-direction: column;
+            }
+            
+            #audio-section,
+            #message-section {
+                flex: none;
+                height: 50%;
+            }
+            
+            #loading-title {
+                font-size: 36px;
+            }
+            
+            #progress-bar {
+                width: 250px;
+            }
+            
+            .album-photo {
+                width: 90%;
+                height: 50vh;
+            }
+            
+            .album-text {
+                width: 90%;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 开场动画 -->
+    <div id="loading-screen">
+        <div id="loading-content">
+            <h1 id="loading-title">看世界</h1>
+            <p id="loading-subtitle">See the World, Collect the Stars</p>
+            <p id="loading-text">Loading memories...</p>
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <p id="loading-percentage">0%</p>
+        </div>
+    </div>
+    
+    <!-- 主菜单按钮 -->
+    <div id="menu-buttons">
+        <button class="menu-button" id="enter-button">✨ ENTER ✨</button>
+        <button class="menu-button" id="or-button">❓ OR ? ❓</button>
+    </div>
+    
+    <!-- 地球场景 -->
+    <div id="earth-container"></div>
+    
+    <!-- UI 面板 -->
+    <div id="ui-panel">
+        <div class="ui-item" id="stars-count">⭐ 星尘: 0</div>
+        <div class="ui-item" id="cities-count">🎯 解锁城市: 0/4</div>
+    </div>
+    
+    <!-- 返回按钮 -->
+    <button class="back-button" id="back-to-menu">🏠 返回主菜单</button>
+    
+    <!-- 标语 -->
+    <div id="slogan">
+        <h2>我们去过的远方</h2>
+        <h3>The Distant Places We've Been</h3>
+        <p>Every journey leaves a beautiful memory. Let's collect them all!</p>
+    </div>
+    
+    <!-- 底部赠言 -->
+    <div id="message">长长的路要挥霍地走，大大的世界要真实地感受</div>
+    
+
+    
+    <!-- 通知 -->
+    <div class="notification" id="notification"></div>
+    
+    <!-- 添加城市按钮 -->
+    <button class="add-city-button" id="add-city-button">➕ 添加新城市</button>
+    
+    <!-- 上传祝福语按钮 -->
+    <button class="upload-wishes-button" id="upload-wishes-button">📝 上传祝福语</button>
+    
+    <!-- 添加城市模态框 -->
+    <div id="add-city-modal">
+        <div id="add-city-content">
+            <h3>添加新城市</h3>
+            <input type="text" id="city-name" placeholder="城市名">
+            <input type="number" id="city-lat" placeholder="纬度">
+            <input type="number" id="city-lng" placeholder="经度">
+            <div id="add-photo-section">
+                <input type="text" id="new-photo-url" placeholder="照片URL">
+                <input type="text" id="new-photo-caption" placeholder="照片说明">
+                <button id="add-photo-to-city">添加照片</button>
+            </div>
+            <div id="city-photos-list"></div>
+            <textarea id="city-quote" placeholder="语录/回忆文字（可选）"></textarea>
+            <div id="add-city-buttons">
+                <button id="save-city">保存</button>
+                <button id="cancel-add-city">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 上传祝福语模态框 -->
+    <div id="upload-wishes-modal">
+        <div id="upload-wishes-content">
+            <h3>上传祝福语</h3>
+            <input type="file" id="wishes-file" accept=".txt">
+            <p>请上传一个.txt文件，每行一条祝福语</p>
+            <div id="upload-wishes-buttons">
+                <button id="upload-wishes">上传</button>
+                <button id="cancel-upload-wishes">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 上传音频模态框 -->
+    <div id="upload-audio-modal">
+        <div id="upload-audio-content">
+            <h3>上传音频文件</h3>
+            <input type="file" id="audio-file" accept=".mp3,.wav">
+            <div id="upload-audio-buttons">
+                <button id="upload-audio">上传</button>
+                <button id="cancel-upload-audio">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 像素加载动画 -->
+    <div id="pixel-loading">
+        <div id="pixel-text">正在打开记忆...</div>
+        <div id="pixel-bar">
+            <div id="pixel-fill"></div>
+        </div>
+    </div>
+    
+    <!-- 相册 -->
+    <div id="album">
+        <div id="album-header">
+            <h1 id="album-city-name"></h1>
+            <h2 id="album-city-chinese"></h2>
+        </div>
+        <div id="album-main-photo">
+            <div class="photo-navigation">
+                <button class="nav-button prev">&lt;</button>
+                <button class="nav-button next">&gt;</button>
+            </div>
+        </div>
+        <div id="album-text"></div>
+        <div id="album-footer">
+            <button id="close-album">← Back to Earth</button>
+        </div>
+        <button id="edit-button">📝 编辑回忆</button>
+    </div>
+    
+    <!-- 编辑回忆模态框 -->
+    <div id="edit-modal">
+        <div id="edit-content">
+            <h3>编辑回忆</h3>
+            <div id="photo-list">
+                <!-- 照片列表将在这里动态生成 -->
+            </div>
+            <div id="add-photo-section">
+                <p>添加图片（使用相对路径或网络URL）：</p>
+                <input type="text" id="new-photo" placeholder="添加新照片路径（例如：photos/1.jpg）">
+                <input type="text" id="new-photo-caption" placeholder="添加照片说明">
+                <input type="text" id="new-quote" placeholder="添加回忆文字">
+                <button id="add-photo">添加照片</button>
+            </div>
+            <div id="edit-buttons">
+                <button id="save-edit">保存</button>
+                <button id="cancel-edit">取消</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑城市模态框 -->
+    <div id="edit-city-modal">
+        <div id="edit-city-content">
+            <h3>编辑城市</h3>
+            <input type="text" id="edit-city-name" placeholder="城市名">
+            <input type="number" id="edit-city-lat" placeholder="纬度" step="0.0001">
+            <input type="number" id="edit-city-lng" placeholder="经度" step="0.0001">
+            <input type="number" id="edit-city-stars" placeholder="解锁所需星星数" min="1">
+            <input type="number" id="edit-city-size" placeholder="标签大小（像素）" min="12" max="30" step="1">
+            <div id="edit-city-buttons">
+                <button id="save-city-edit">保存</button>
+                <button id="cancel-city-edit">取消</button>
+                <button id="delete-city" style="background-color: #ff6b9d; color: white;">删除城市</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- OR模式 -->
+    <div id="or-mode">
+        <button class="back-button" id="back-from-or">🏠 返回主菜单</button>
+        <div id="or-container">
+            <div id="audio-section">
+                <h2 id="audio-title">语音祝福</h2>
+                <div id="audio-player">
+                    <button id="play-button">播放祝福</button>
+                    <div id="waveform">
+                        <div class="wave-bar" style="animation-delay: 0s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.4s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.5s;"></div>
+                        <div class="wave-bar" style="animation-delay: 0.6s;"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="message-section">
+                <h2 id="message-title">留言板</h2>
+                <div id="message-list"></div>
+                <form id="message-form">
+                    <input type="text" id="nickname" placeholder="昵称">
+                    <textarea id="message-content" placeholder="写下你的祝福"></textarea>
+                    <button type="button" id="send-message">发送</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 引入Three.js和相关库 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
+    
+    <script>
+        // 背景图片配置 - 用户可替换
+        // 将图片文件放在同一目录下，修改下面的值为文件名即可（例如 'my-bg.jpg'）
+        // 或使用在线图片URL
+        const BACKGROUND_IMAGE_URL = 'hellokitty.jpg';
+        
+        // 存储新城市的照片
+        let newCityPhotos = [];
+        
+        // 配置数据
+        const config = {
+            // 城市数据 - 整合了城市信息和记忆数据
+            locations: [
+                {
+                    name: "Seoul",
+                    chineseName: "首尔",
+                    coordinates: [37.5665, 126.9780],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=seoul%20city%20skyline%20south%20korea&image_size=landscape_16_9"],
+                    text: "首尔的夜景，灯火辉煌，充满了现代都市的活力。"
+                },
+                {
+                    name: "Nanjing",
+                    chineseName: "南京",
+                    coordinates: [32.0603, 118.7969],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [
+                        { url: "photo/2.jpg", caption: "下雨" },
+                        { url: "photo/3.jpg", caption: "好爱吃的两个小女孩" },
+                        { url: "photo/5.jpg", caption: "因为孤独的总和" }
+                    ],
+                    text: "南京很舒适哦"
+                },
+                {
+                    name: "Guiyang",
+                    chineseName: "贵阳",
+                    coordinates: [26.5783, 106.7135],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [
+                        { url: "photo/1.jpg", caption: "好美味" },
+                        { url: "photo/14.jpg", caption: "超级好吃的酸笋火锅" },
+                        { url: "photo/6.jpg", caption: "萌萌滴" },
+                        { url: "photo/14.jpg", caption: "嘿嘿嘿" }
+                    ],
+                    text: "洋芋国"
+                },
+                {
+                    name: "Xian",
+                    chineseName: "西安",
+                    coordinates: [34.3416, 108.9398],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [
+                        { url: "photo/7.jpg", caption: "古风小女子" },
+                        { url: "photo/18.jpg", caption: "大瀑布" },
+                        { url: "photo/20.jpg", caption: "好可爱的小女孩 好有活人感" },
+                        { url: "photo/19.jpg", caption: "华山落汤鸡" },
+                        { url: "photo/17.jpg", caption: "一般般" },
+                        { url: "photo/21.jpg", caption: "大碗面" }
+                    ],
+                    text: "第一站"
+                },
+                {
+                    name: "Heyuan",
+                    chineseName: "河源",
+                    coordinates: [23.7478, 114.6952],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [
+                        { url: "photo/10.jpg", caption: "长胡子的小女孩" },
+                        { url: "photo/11.jpg", caption: "爱笔芯的小女孩们" }
+                    ],
+                    text: "有我的城市"
+                },
+                {
+                    name: "Tokyo",
+                    chineseName: "东京",
+                    coordinates: [35.6762, 139.6503],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [{ url: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=tokyo%20city%20skyline%20japan&image_size=landscape_16_9", caption: "东京城市天际线" }],
+                    text: "东京的繁华，让人感受到了大都市的魅力。"
+                },
+                {
+                    name: "Sydney",
+                    chineseName: "悉尼",
+                    coordinates: [-33.8688, 151.2093],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [{ url: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=sydney%20opera%20house%20australia&image_size=landscape_16_9", caption: "悉尼歌剧院" }],
+                    text: "悉尼歌剧院，建筑的杰作，令人叹为观止。"
+                },
+                {
+                    name: "New York",
+                    chineseName: "纽约",
+                    coordinates: [40.7128, -74.0060],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: [{ url: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=new%20york%20city%20skyline%20usa&image_size=landscape_16_9", caption: "纽约城市天际线" }],
+                    text: "纽约的天际线，高楼林立，展现了城市的活力。"
+                },
+                {
+                    name: "Rio de Janeiro",
+                    chineseName: "里约热内卢",
+                    coordinates: [-22.9068, -43.1729],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=rio%20de%20janeiro%20copacabana%20brazil&image_size=landscape_16_9"],
+                    text: "里约的海滩，阳光明媚，充满了热带风情。"
+                },
+                {
+                    name: "Paris",
+                    chineseName: "巴黎",
+                    coordinates: [48.8566, 2.3522],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=paris%20eiffel%20tower%20france&image_size=landscape_16_9"],
+                    text: "巴黎的埃菲尔铁塔，浪漫的象征，让人陶醉。"
+                },
+                {
+                    name: "Cairo",
+                    chineseName: "开罗",
+                    coordinates: [30.0444, 31.2357],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cairo%20pyramids%20egypt&image_size=landscape_16_9"],
+                    text: "开罗的金字塔，古老的奇迹，见证了历史的变迁。"
+                },
+                {
+                    name: "London",
+                    chineseName: "伦敦",
+                    coordinates: [51.5074, -0.1278],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=london%20big%20ben%20uk&image_size=landscape_16_9"],
+                    text: "伦敦的大本钟，英国的象征，历史悠久。"
+                },
+                {
+                    name: "Bangkok",
+                    chineseName: "曼谷",
+                    coordinates: [13.7563, 100.5018],
+                    starsRequired: 3,
+                    unlocked: false,
+                    photos: ["https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bangkok%20grand%20palace%20thailand&image_size=landscape_16_9"],
+                    text: "曼谷的大皇宫，金碧辉煌，展现了泰国的文化。"
+                }
+            ],
+            // 星星总数
+            totalStars: 30,
+            // 雪花总数
+            totalSnowflakes: 15,
+            // 祝福语库
+            wishes: [
+                "🐻 放轻松，慢慢看世界",
+                "🎀 每一天都是新的冒险",
+                "🍯 像蜂蜜一样甜",
+                "✨ 愿你的旅途永远有光",
+                "🍃 记得带伞，也记得带笑",
+                "🌟 收集每一刻的美好",
+                "🌈 愿你的世界充满色彩",
+                "🌸 每一次相遇都是礼物"
+            ]
+        };
+        
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let earth, stars = [], snowflakes = [], stardustArray = [];
+        let starCount = 0;
+        let citiesUnlocked = 0;
+        let selectedCity = null;
+        let cityMarkers = [];
+        let travelPathLine = null;
+        let visitedCities = [];
+        
+        // 初始化
+        function init() {
+            // 设置背景图片
+            const bgImage = `url('${BACKGROUND_IMAGE_URL}')`;
+            
+            // 开场和地球页面使用背景图片
+            document.getElementById('loading-screen').style.backgroundImage = bgImage;
+            document.getElementById('loading-screen').style.backgroundSize = 'cover';
+            document.getElementById('loading-screen').style.backgroundPosition = 'center';
+            document.getElementById('loading-screen').style.backgroundRepeat = 'no-repeat';
+            
+            document.getElementById('earth-container').style.backgroundImage = bgImage;
+            document.getElementById('earth-container').style.backgroundSize = 'cover';
+            document.getElementById('earth-container').style.backgroundPosition = 'center';
+            document.getElementById('earth-container').style.backgroundRepeat = 'no-repeat';
+            
+            document.getElementById('or-mode').style.backgroundImage = bgImage;
+            document.getElementById('or-mode').style.backgroundSize = 'cover';
+            document.getElementById('or-mode').style.backgroundPosition = 'center';
+            document.getElementById('or-mode').style.backgroundRepeat = 'no-repeat';
+            
+            // 主菜单页面使用纯色背景
+            document.body.style.background = 'linear-gradient(135deg, #ffebf0 0%, #ffc0cb 100%)';
+            
+            createFloatingElements();
+            startLoadingAnimation();
+            loadData();
+            setupEventListeners();
+        }
+        
+        // 创建漂浮元素
+        function createFloatingElements() {
+            const elements = ['🎀', '🐱', '☁️', '⭐', '💖', '🐻', '🍯', '🌼'];
+            const loadingScreen = document.getElementById('loading-screen');
+            
+            // 减少emoji数量，避免遮挡标题
+            for (let i = 0; i < 10; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.textContent = elements[Math.floor(Math.random() * elements.length)];
+                // 避免在标题区域生成emoji
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                // 避开中心区域（40%-60%宽度，30%-70%高度）
+                if (!(left > 40 && left < 60 && top > 30 && top < 70)) {
+                    element.style.left = left + '%';
+                    element.style.top = top + '%';
+                    element.style.animationDelay = Math.random() * 3 + 's';
+                    element.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    loadingScreen.appendChild(element);
+                }
+            }
+        }
+        
+        // 开始加载动画
+        function startLoadingAnimation() {
+            const progressFill = document.getElementById('progress-fill');
+            const percentage = document.getElementById('loading-percentage');
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += 1;
+                progressFill.style.width = progress + '%';
+                percentage.textContent = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').style.display = 'none';
+                            document.getElementById('menu-buttons').style.opacity = '1';
+                            document.getElementById('menu-buttons').style.pointerEvents = 'auto';
+                        }, 500);
+                    }, 500);
+                }
+            }, 40);
+        }
+        
+        // 加载数据
+        function loadData() {
+            // 从localStorage加载数据
+            const savedStarCount = localStorage.getItem('starCount');
+            const savedLocations = localStorage.getItem('locations');
+            const savedWishes = localStorage.getItem('wishes');
+            
+            if (savedStarCount) {
+                starCount = parseInt(savedStarCount);
+            }
+            
+            if (savedLocations) {
+                const locations = JSON.parse(savedLocations);
+                // 直接替换locations，确保所有数据都被正确加载
+                config.locations = locations;
+                citiesUnlocked = config.locations.filter(location => location.unlocked).length;
+            }
+            
+            if (savedWishes) {
+                const wishes = JSON.parse(savedWishes);
+                config.wishes = wishes;
+            }
+        }
+        
+        // 保存数据
+        function saveData() {
+            localStorage.setItem('starCount', starCount.toString());
+            localStorage.setItem('locations', JSON.stringify(config.locations));
+            localStorage.setItem('wishes', JSON.stringify(config.wishes));
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // ENTER按钮
+            document.getElementById('enter-button').addEventListener('click', () => {
+                document.getElementById('menu-buttons').style.display = 'none';
+                initEarthScene();
+                document.getElementById('earth-container').style.display = 'block';
+                document.getElementById('ui-panel').style.display = 'block';
+                document.getElementById('back-to-menu').style.display = 'block';
+                document.getElementById('message').style.display = 'block';
+                updateUI();
+            });
+            
+            // OR按钮
+            document.getElementById('or-button').addEventListener('click', () => {
+                document.getElementById('menu-buttons').style.display = 'none';
+                document.getElementById('or-mode').style.display = 'block';
+                document.getElementById('back-from-or').style.display = 'block';
+                loadMessages();
+                
+                // 让所有留言浮动显示
+                floatAllMessages();
+            });
+            
+            // 开场动画结束后显示主菜单时，确保背景是纯色
+            setTimeout(() => {
+                document.body.style.background = 'linear-gradient(135deg, #ffebf0 0%, #ffc0cb 100%)';
+            }, 5000);
+            
+            // 返回主菜单
+            document.getElementById('back-to-menu').addEventListener('click', () => {
+                destroyEarthScene();
+                document.getElementById('earth-container').style.display = 'none';
+                document.getElementById('ui-panel').style.display = 'none';
+                document.getElementById('back-to-menu').style.display = 'none';
+                document.getElementById('message').style.display = 'none';
+                document.getElementById('menu-buttons').style.display = 'flex';
+                document.getElementById('menu-buttons').style.opacity = '1';
+                document.getElementById('menu-buttons').style.pointerEvents = 'auto';
+                // 确保主菜单页面使用纯色背景
+                document.body.style.background = 'linear-gradient(135deg, #ffebf0 0%, #ffc0cb 100%)';
+            });
+            
+            // 从OR模式返回
+            document.getElementById('back-from-or').addEventListener('click', () => {
+                document.getElementById('or-mode').style.display = 'none';
+                document.getElementById('back-from-or').style.display = 'none';
+                document.getElementById('menu-buttons').style.display = 'flex';
+                document.getElementById('menu-buttons').style.opacity = '1';
+                document.getElementById('menu-buttons').style.pointerEvents = 'auto';
+                // 确保主菜单页面使用纯色背景
+                document.body.style.background = 'linear-gradient(135deg, #ffebf0 0%, #ffc0cb 100%)';
+            });
+            
+            // 播放祝福
+            document.getElementById('play-button').addEventListener('click', () => {
+                playVoiceMessage();
+            });
+            
+            // 发送留言
+            document.getElementById('send-message').addEventListener('click', () => {
+                sendMessage();
+            });
+            
+            // 关闭相册
+            document.getElementById('close-album').addEventListener('click', () => {
+                document.getElementById('album').style.display = 'none';
+                document.getElementById('earth-container').style.display = 'block';
+                document.getElementById('ui-panel').style.display = 'block';
+                document.getElementById('back-to-menu').style.display = 'block';
+                document.getElementById('message').style.display = 'block';
+            });
+            
+            // 编辑回忆
+            document.getElementById('edit-button').addEventListener('click', () => {
+                openEditModal();
+            });
+            
+            // 保存编辑
+            document.getElementById('save-edit').addEventListener('click', () => {
+                saveEdit();
+            });
+            
+            // 取消编辑
+            document.getElementById('cancel-edit').addEventListener('click', () => {
+                closeEditModal();
+            });
+            
+            // 添加城市按钮
+            document.getElementById('add-city-button').addEventListener('click', () => {
+                document.getElementById('add-city-modal').style.display = 'flex';
+            });
+            
+            // 取消添加城市
+            document.getElementById('cancel-add-city').addEventListener('click', () => {
+                document.getElementById('add-city-modal').style.display = 'none';
+                // 重置照片列表
+                resetNewCityPhotos();
+            });
+            
+            // 保存城市
+            document.getElementById('save-city').addEventListener('click', () => {
+                addNewCity();
+            });
+            
+            // 添加照片
+            document.getElementById('add-photo-to-city').addEventListener('click', () => {
+                addPhotoToCity();
+            });
+            
+            // 上传祝福语按钮
+            document.getElementById('upload-wishes-button').addEventListener('click', () => {
+                document.getElementById('upload-wishes-modal').style.display = 'flex';
+            });
+            
+            // 取消上传祝福语
+            document.getElementById('cancel-upload-wishes').addEventListener('click', () => {
+                document.getElementById('upload-wishes-modal').style.display = 'none';
+            });
+            
+            // 上传祝福语
+            document.getElementById('upload-wishes').addEventListener('click', () => {
+                uploadWishes();
+            });
+            
+            // 上传音频按钮
+            document.getElementById('play-button').addEventListener('click', () => {
+                if (localStorage.getItem('audioFile')) {
+                    playAudio();
+                } else {
+                    document.getElementById('upload-audio-modal').style.display = 'flex';
+                }
+            });
+            
+            // 取消上传音频
+            document.getElementById('cancel-upload-audio').addEventListener('click', () => {
+                document.getElementById('upload-audio-modal').style.display = 'none';
+            });
+            
+            // 上传音频
+            document.getElementById('upload-audio').addEventListener('click', () => {
+                uploadAudio();
+            });
+        }
+        
+        // 初始化地球场景
+        function initEarthScene() {
+            // 创建场景
+            scene = new THREE.Scene();
+            
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 3;
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            document.getElementById('earth-container').appendChild(renderer.domElement);
+            
+            // 添加轨道控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true;
+            
+            // 创建地球
+            createEarth();
+            
+            // 创建星星
+            createStars();
+            
+            // 创建雪花
+            createSnowflakes();
+            
+            // 创建星尘粒子
+            createStardust();
+            
+            // 创建城市标记
+            createCityMarkers();
+            
+            // 检查是否所有城市都已解锁，如果是，生成旅行轨迹
+            checkAllCitiesUnlocked();
+            
+            // 显示添加城市和上传祝福语按钮
+            document.getElementById('add-city-button').style.display = 'block';
+            document.getElementById('upload-wishes-button').style.display = 'block';
+            
+            // 显示标语
+            document.getElementById('slogan').style.display = 'block';
+            
+            // 添加事件监听器
+            window.addEventListener('resize', onWindowResize, false);
+            
+            // 开始动画
+            animate();
+        }
+        
+        // 创建地球
+        function createEarth() {
+            // 地球核心
+            const geometry = new THREE.SphereGeometry(1.2, 64, 64); // 适当减小地球半径
+            
+            // 加载地球纹理
+            const textureLoader = new THREE.TextureLoader();
+            const earthTexture = textureLoader.load('https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg');
+            
+            // 真实地球材质，添加珍珠光泽效果
+            const material = new THREE.MeshPhongMaterial({
+                map: earthTexture,
+                specular: 0xfff0f5,
+                shininess: 50,
+                emissive: 0x000000,
+                emissiveIntensity: 0.1,
+                transparent: false
+            });
+            
+            earth = new THREE.Mesh(geometry, material);
+            scene.add(earth);
+            
+            // 添加透明外壳模拟贝壳
+            const shellGeometry = new THREE.SphereGeometry(1.25, 64, 64); // 相应减小外壳半径
+            const shellMaterial = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.2,
+                specular: 0xffffff,
+                shininess: 100
+            });
+            const shell = new THREE.Mesh(shellGeometry, shellMaterial);
+            scene.add(shell);
+            
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            
+            const pointLight = new THREE.PointLight(0xffffff, 1.5);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+        }
+        
+        // 创建星星
+        function createStars() {
+            const geometry = new THREE.SphereGeometry(0.04, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffff00, transparent: true, opacity: 0.9 });
+            
+            for (let i = 0; i < config.totalStars; i++) {
+                const star = new THREE.Mesh(geometry, material);
+                star.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+                scene.add(star);
+                stars.push(star);
+            }
+        }
+        
+        // 创建雪花（使用蓝色球体模拟）
+        function createSnowflakes() {
+            const geometry = new THREE.SphereGeometry(0.04, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x87ceeb, 
+                transparent: true, 
+                opacity: 1.0
+            });
+            
+            for (let i = 0; i < config.totalSnowflakes; i++) {
+                const snowflake = new THREE.Mesh(geometry, material);
+                snowflake.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+                scene.add(snowflake);
+                snowflakes.push(snowflake);
+            }
+        }
+        
+        // 创建星尘粒子
+        function createStardust() {
+            const geometry = new THREE.SphereGeometry(0.02, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0xffff00, 
+                transparent: true, 
+                opacity: 0.8
+            });
+            
+            for (let i = 0; i < 50; i++) {
+                const stardust = new THREE.Mesh(geometry, material);
+                stardust.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+                stardust.velocity = {
+                    x: (Math.random() - 0.5) * 0.005,
+                    y: (Math.random() - 0.5) * 0.005,
+                    z: (Math.random() - 0.5) * 0.005
+                };
+                scene.add(stardust);
+                stardustArray.push(stardust);
+            }
+        }
+        
+        // 创建城市标记
+        function createCityMarkers() {
+            const cssRenderer = new THREE.CSS2DRenderer();
+            cssRenderer.setSize(window.innerWidth, window.innerHeight);
+            cssRenderer.domElement.style.position = 'absolute';
+            cssRenderer.domElement.style.top = '0';
+            cssRenderer.domElement.style.left = '0';
+            cssRenderer.domElement.style.zIndex = '9999'; // 确保CSS2DRenderer在最上层
+            cssRenderer.domElement.style.pointerEvents = 'none'; // 让鼠标事件穿透到Three.js场景
+            document.getElementById('earth-container').appendChild(cssRenderer.domElement);
+            
+            config.locations.forEach((location, index) => {
+                // 经纬度转三维坐标
+                // 注意：纬度是从赤道向北测量的角度，经度是从本初子午线向东测量的角度
+                const lat = (90 - location.coordinates[0]) * Math.PI / 180; // 转换为从北极开始的角度
+                const lng = location.coordinates[1] * Math.PI / 180;
+                const radius = 1.21; // 调整半径以匹配地球大小
+                
+                // 使用球坐标系转换为笛卡尔坐标系
+                const x = radius * Math.sin(lat) * Math.cos(lng);
+                const y = radius * Math.cos(lat);
+                const z = radius * Math.sin(lat) * Math.sin(lng);
+                
+                // 创建标记元素
+                const markerElement = document.createElement('div');
+                markerElement.className = 'city-marker';
+                // 解锁的城市显示名称（中国城市用中文，国外城市用英文）
+                const chineseCities = ['Nanjing', 'Guiyang', 'Xian'];
+                const displayName = chineseCities.includes(location.name) ? location.chineseName : location.name;
+                if (location.unlocked) {
+                    markerElement.innerHTML = `${displayName} <span class="edit-city" style="font-size: ${(location.labelSize || 14) * 0.7}px; margin-left: 5px; color: #999; cursor: pointer;">✏️</span>`;
+                } else {
+                    markerElement.innerHTML = `🔒 <span class="edit-city" style="font-size: ${(location.labelSize || 14) * 0.7}px; margin-left: 5px; color: #999; cursor: pointer;">✏️</span>`;
+                }
+                markerElement.style.fontSize = `${location.labelSize || 14}px`; // 使用城市的标签大小或默认值
+                markerElement.style.cursor = 'pointer';
+                markerElement.style.userSelect = 'none';
+                markerElement.style.padding = '6px'; // 减小 padding
+                markerElement.style.background = 'rgba(255, 255, 255, 0.9)';
+                markerElement.style.borderRadius = '12px'; // 减小圆角
+                markerElement.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                markerElement.style.zIndex = '9999'; // 确保标记在最上层
+                markerElement.style.position = 'relative';
+                markerElement.style.pointerEvents = 'auto';
+                markerElement.style.whiteSpace = 'nowrap'; // 防止文本换行
+                markerElement.style.opacity = '0'; // 初始透明度为0
+                markerElement.style.transition = 'opacity 1s ease-in-out'; // 添加过渡效果
+                
+                // 添加点击事件
+                markerElement.addEventListener('click', (e) => {
+                    // 检查是否点击了编辑按钮
+                    if (e.target.classList.contains('edit-city')) {
+                        e.stopPropagation();
+                        editCity(location, index);
+                    } else {
+                        handleCityClick(location);
+                    }
+                });
+                
+                // 创建CSS2DObject
+                const marker = new THREE.CSS2DObject(markerElement);
+                marker.position.set(x, y, z);
+                scene.add(marker);
+                cityMarkers.push(marker);
+                
+                // 添加延迟，让城市灯光一点一点亮起
+                setTimeout(() => {
+                    markerElement.style.opacity = '1';
+                }, index * 500); // 每个城市延迟500毫秒
+            });
+            
+            // 更新CSS渲染器
+            function renderCSS() {
+                cssRenderer.render(scene, camera);
+            }
+            
+            // 在动画循环中调用
+            const originalAnimate = animate;
+            animate = function() {
+                originalAnimate();
+                renderCSS();
+            };
+        }
+        
+        // 处理城市点击
+        function handleCityClick(location) {
+            if (location.unlocked) {
+                // 打开相册
+                openAlbum(location.name);
+                
+                // 将城市添加到访问列表
+                if (!visitedCities.includes(location.name)) {
+                    visitedCities.push(location.name);
+                    updateTravelPath();
+                }
+            } else {
+                // 检查星星数量
+                if (starCount >= location.starsRequired) {
+                    // 解锁城市
+                    location.unlocked = true;
+                    citiesUnlocked++;
+                    starCount -= location.starsRequired;
+                    saveData();
+                    updateUI();
+                    updateCityMarkers();
+                    
+                    // 显示解锁弹窗
+                    showUnlockPopup(location.name);
+                    
+                    // 检查是否所有城市都已解锁
+                    if (citiesUnlocked === config.locations.length) {
+                        createParticleRing();
+                    }
+                } else {
+                    // 显示需要更多星星
+                    showNotification(`需要 ${location.starsRequired - starCount} 颗星星才能解锁 ${location.name}！`);
+                }
+            }
+        }
+        
+        // 显示解锁弹窗
+        function showUnlockPopup(cityName) {
+            // 创建弹窗元素
+            const popup = document.createElement('div');
+            popup.className = 'unlock-popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <div class="popup-emoji">🎉</div>
+                    <div class="popup-text">恭喜解锁 ${cityName}！</div>
+                    <div class="popup-subtext">可以查看城市回忆了 🌟</div>
+                </div>
+            `;
+            
+            // 添加样式
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.zIndex = '1000';
+            popup.style.animation = 'fadeIn 0.5s ease-out';
+            
+            // 添加弹窗内容样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .unlock-popup .popup-content {
+                    background: rgba(255, 255, 255, 0.95);
+                    padding: 30px;
+                    border-radius: 20px;
+                    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+                    text-align: center;
+                    border: 2px solid #ffd1dc;
+                }
+                
+                .unlock-popup .popup-emoji {
+                    font-size: 48px;
+                    margin-bottom: 15px;
+                }
+                
+                .unlock-popup .popup-text {
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: #ff6b9d;
+                    margin-bottom: 10px;
+                }
+                
+                .unlock-popup .popup-subtext {
+                    font-size: 16px;
+                    color: #ff8fb3;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translate(-50%, -60%); }
+                    to { opacity: 1; transform: translate(-50%, -50%); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(popup);
+            
+            // 3秒后移除弹窗
+            setTimeout(() => {
+                popup.style.animation = 'fadeIn 0.5s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(popup);
+                    document.head.removeChild(style);
+                }, 500);
+            }, 3000);
+        }
+        
+        // 更新城市标记
+        function updateCityMarkers() {
+            config.locations.forEach((location, index) => {
+                const marker = cityMarkers[index];
+                if (marker) {
+                    // 解锁后显示城市名称（中国城市用中文，国外城市用英文）
+                    const chineseCities = ['Nanjing', 'Guiyang', 'Xian'];
+                    const displayName = chineseCities.includes(location.name) ? location.chineseName : location.name;
+                    if (location.unlocked) {
+                        marker.element.innerHTML = `${displayName} <span class="edit-city" style="font-size: ${(location.labelSize || 14) * 0.7}px; margin-left: 5px; color: #999; cursor: pointer;">✏️</span>`;
+                        marker.element.style.fontSize = `${location.labelSize || 14}px`;
+                        marker.element.style.background = 'rgba(255, 255, 255, 0.9)';
+                        marker.element.style.borderRadius = '12px';
+                        marker.element.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        marker.element.style.padding = '6px';
+                        marker.element.style.color = '#ff6b9d';
+                    } else {
+                        marker.element.innerHTML = `🔒 <span class="edit-city" style="font-size: ${(location.labelSize || 14) * 0.7}px; margin-left: 5px; color: #999; cursor: pointer;">✏️</span>`;
+                        marker.element.style.fontSize = `${location.labelSize || 14}px`;
+                        marker.element.style.background = 'rgba(255, 255, 255, 0.7)';
+                        marker.element.style.borderRadius = '12px';
+                        marker.element.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        marker.element.style.padding = '6px';
+                    }
+                    
+                    // 重新添加点击事件监听器
+                    marker.element.onclick = (e) => {
+                        // 检查是否点击了编辑按钮
+                        if (e.target.classList.contains('edit-city')) {
+                            e.stopPropagation();
+                            editCity(location, index);
+                        } else {
+                            handleCityClick(location);
+                        }
+                    };
+                }
+            });
+        }
+        
+        // 添加新城市
+        // 添加照片到新城市
+        function addPhotoToCity() {
+            const photoUrl = document.getElementById('new-photo-url').value;
+            const photoCaption = document.getElementById('new-photo-caption').value;
+            
+            if (photoUrl) {
+                newCityPhotos.push({ url: photoUrl, caption: photoCaption });
+                updateCityPhotosList();
+                
+                // 清空输入框
+                document.getElementById('new-photo-url').value = '';
+                document.getElementById('new-photo-caption').value = '';
+            }
+        }
+        
+        // 更新城市照片列表
+        function updateCityPhotosList() {
+            const photosList = document.getElementById('city-photos-list');
+            photosList.innerHTML = '';
+            
+            newCityPhotos.forEach((photo, index) => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'city-photo-item';
+                photoItem.innerHTML = `
+                    <img src="${photo.url}" alt="City photo">
+                    <div class="photo-info">
+                        <div class="photo-url">${photo.url}</div>
+                        <div class="photo-caption">${photo.caption || '无说明'}</div>
+                    </div>
+                    <button class="remove-photo" onclick="removeCityPhoto(${index})">删除</button>
+                `;
+                photosList.appendChild(photoItem);
+            });
+        }
+        
+        // 从新城市中删除照片
+        function removeCityPhoto(index) {
+            newCityPhotos.splice(index, 1);
+            updateCityPhotosList();
+        }
+        
+        // 重置新城市照片列表
+        function resetNewCityPhotos() {
+            newCityPhotos = [];
+            updateCityPhotosList();
+        }
+        
+        function addNewCity() {
+            const name = document.getElementById('city-name').value;
+            const lat = parseFloat(document.getElementById('city-lat').value);
+            const lng = parseFloat(document.getElementById('city-lng').value);
+            const quote = document.getElementById('city-quote').value || '探索这座城市的美好！';
+            
+            if (name && !isNaN(lat) && !isNaN(lng)) {
+                // 如果没有添加照片，使用默认照片
+                if (newCityPhotos.length === 0) {
+                    newCityPhotos.push({ 
+                        url: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=city%20landscape%20travel%20destination&image_size=landscape_16_9',
+                        caption: '城市风景'
+                    });
+                }
+                
+                const newCity = { 
+                    name, 
+                    chineseName: name, 
+                    coordinates: [lat, lng], 
+                    starsRequired: 3, 
+                    unlocked: false,
+                    photos: newCityPhotos,
+                    text: quote
+                };
+                config.locations.push(newCity);
+                
+                saveData();
+                
+                // 重新创建城市标记
+                cityMarkers = [];
+                const cssRenderer = new THREE.CSS2DRenderer();
+                cssRenderer.setSize(window.innerWidth, window.innerHeight);
+                cssRenderer.domElement.style.position = 'absolute';
+                cssRenderer.domElement.style.top = '0';
+                document.getElementById('earth-container').innerHTML = '';
+                document.getElementById('earth-container').appendChild(renderer.domElement);
+                document.getElementById('earth-container').appendChild(cssRenderer.domElement);
+                
+                createCityMarkers();
+                
+                document.getElementById('add-city-modal').style.display = 'none';
+                document.getElementById('city-name').value = '';
+                document.getElementById('city-lat').value = '';
+                document.getElementById('city-lng').value = '';
+                document.getElementById('city-quote').value = '';
+                
+                // 重置照片列表
+                resetNewCityPhotos();
+                
+                showNotification(`🎉 新城市 ${name} 添加成功！`);
+            }
+        }
+        
+        // 上传祝福语
+        function uploadWishes() {
+            const fileInput = document.getElementById('wishes-file');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const wishes = content.split('\n').filter(line => line.trim() !== '');
+                    if (wishes.length > 0) {
+                        config.wishes = wishes;
+                        localStorage.setItem('wishes', JSON.stringify(wishes));
+                        document.getElementById('upload-wishes-modal').style.display = 'none';
+                        showNotification('🎉 祝福语上传成功！');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+        
+        // 上传音频
+        function uploadAudio() {
+            const fileInput = document.getElementById('audio-file');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                console.log('选中的文件:', file);
+                console.log('文件大小:', file.size, '字节');
+                console.log('文件类型:', file.type);
+                console.log('文件名称:', file.name);
+                
+                // 检查文件大小（限制为5MB，因为localStorage容量有限）
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('文件过大，请上传5MB以下的音频文件！');
+                    return;
+                }
+                
+                // 检查文件类型（更宽松的检查）
+                const fileName = file.name.toLowerCase();
+                const validExtensions = ['.mp3', '.wav', '.m4a', '.ogg', '.flac'];
+                const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+                
+                if (!hasValidExtension && !file.type.startsWith('audio/')) {
+                    showNotification('请上传音频格式的文件！');
+                    return;
+                }
+                
+                showNotification('正在上传音频...');
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const audioData = e.target.result;
+                        console.log('音频数据大小:', audioData.length, '字符');
+                        
+                        // 尝试存储音频数据
+                        try {
+                            localStorage.setItem('audioFile', audioData);
+                            console.log('音频数据存储成功');
+                            document.getElementById('upload-audio-modal').style.display = 'none';
+                            showNotification('🎉 音频上传成功！');
+                        } catch (storageError) {
+                            if (storageError.name === 'QuotaExceededError') {
+                                showNotification('存储容量不足，请上传更小的音频文件！');
+                            } else {
+                                showNotification('存储失败：' + storageError.message);
+                            }
+                            console.error('音频存储失败:', storageError);
+                        }
+                    } catch (error) {
+                        showNotification('上传失败：' + error.message);
+                        console.error('音频上传失败:', error);
+                    }
+                };
+                reader.onerror = function(e) {
+                    showNotification('文件读取失败，请重试！');
+                    console.error('文件读取失败:', e);
+                };
+                reader.onprogress = function(e) {
+                    if (e.lengthComputable) {
+                        const percent = Math.round((e.loaded / e.total) * 100);
+                        showNotification('上传中... ' + percent + '%');
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showNotification('请选择音频文件！');
+            }
+        }
+        
+        // 自动加载指定的音频文件（用于测试）
+        function loadTestAudio() {
+            // 注意：由于浏览器安全限制，无法直接从本地文件系统读取文件
+            // 用户需要通过界面上的上传按钮来上传音频文件
+            showNotification('请通过上传按钮上传音频文件！');
+        }
+        
+        // 播放音频
+        function playAudio() {
+            const audioData = localStorage.getItem('audioFile');
+            if (audioData) {
+                try {
+                    const audio = new Audio(audioData);
+                    audio.addEventListener('error', function(e) {
+                        showNotification('音频播放失败：' + e.target.error.message);
+                        console.error('音频播放失败:', e.target.error);
+                    });
+                    audio.play().then(function() {
+                        showNotification('🎵 音频播放中...');
+                    }).catch(function(error) {
+                        showNotification('播放失败：' + error.message);
+                        console.error('音频播放失败:', error);
+                    });
+                } catch (error) {
+                    showNotification('播放失败：' + error.message);
+                    console.error('音频播放失败:', error);
+                }
+            } else {
+                showNotification('请先上传音频文件！');
+            }
+        }
+        
+        // 创建粒子环（所有城市解锁后）
+        function createParticleRing() {
+            const geometry = new THREE.BufferGeometry();
+            const particles = 100;
+            const positions = new Float32Array(particles * 3);
+            
+            for (let i = 0; i < particles; i++) {
+                const angle = (i / particles) * Math.PI * 2;
+                positions[i * 3] = Math.cos(angle) * 1.5;
+                positions[i * 3 + 1] = Math.sin(angle) * 1.5;
+                positions[i * 3 + 2] = 0;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const material = new THREE.PointsMaterial({ color: 0xffff00, size: 0.02, transparent: true, opacity: 0.8 });
+            const particleRing = new THREE.Points(geometry, material);
+            scene.add(particleRing);
+        }
+        
+        // 打开相册
+        function openAlbum(cityName) {
+            selectedCity = cityName;
+            
+            // 显示像素加载动画
+            document.getElementById('pixel-loading').style.display = 'flex';
+            document.getElementById('pixel-text').textContent = `正在打开 ${cityName} 的记忆...`;
+            
+            const pixelFill = document.getElementById('pixel-fill');
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += 1;
+                pixelFill.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('pixel-loading').style.display = 'none';
+                        document.getElementById('earth-container').style.display = 'none';
+                        document.getElementById('ui-panel').style.display = 'none';
+                        document.getElementById('back-to-menu').style.display = 'none';
+                        document.getElementById('message').style.display = 'none';
+                        document.getElementById('album').style.display = 'flex';
+                        populateAlbum(cityName);
+                        
+                        // 检查是否是最后一个城市
+                        const unlockedCities = config.locations.filter(location => location.unlocked);
+                        if (unlockedCities.length === config.locations.length) {
+                            // 显示感谢文字
+                            setTimeout(() => {
+                                const thankYouMessage = document.createElement('div');
+                                thankYouMessage.style.position = 'fixed';
+                                thankYouMessage.style.top = '50%';
+                                thankYouMessage.style.left = '50%';
+                                thankYouMessage.style.transform = 'translate(-50%, -50%)';
+                                thankYouMessage.style.background = 'rgba(255, 255, 255, 0.9)';
+                                thankYouMessage.style.padding = '30px';
+                                thankYouMessage.style.borderRadius = '20px';
+                                thankYouMessage.style.boxShadow = '0 4px 12px rgba(255, 107, 157, 0.3)';
+                                thankYouMessage.style.textAlign = 'center';
+                                thankYouMessage.style.zIndex = '9999';
+                                thankYouMessage.style.animation = 'fadeIn 0.5s ease-out';
+                                thankYouMessage.innerHTML = `
+                                    <h3 style="color: #ff6b9d; margin-bottom: 10px;">Thanks for exploring these memories.</h3>
+                                    <p style="color: #ff8fb3;">More places loading…</p>
+                                `;
+                                document.body.appendChild(thankYouMessage);
+                                
+                                // 3秒后移除感谢文字
+                                setTimeout(() => {
+                                    thankYouMessage.style.animation = 'fadeIn 0.5s ease-out reverse';
+                                    setTimeout(() => {
+                                        document.body.removeChild(thankYouMessage);
+                                    }, 500);
+                                }, 3000);
+                            }, 1000);
+                        }
+                    }, 500);
+                }
+            }, 30);
+        }
+        
+        // 填充相册
+        function populateAlbum(cityName) {
+            // 确保cityName存在
+            if (!cityName) {
+                showNotification('城市名称不存在！');
+                return;
+            }
+            
+            // 从locations中获取城市数据
+            const location = config.locations.find(loc => loc.name === cityName);
+            if (!location) {
+                showNotification('城市数据不存在！');
+                return;
+            }
+            
+            // 确保photos数组存在
+            if (!location.photos || !Array.isArray(location.photos)) {
+                location.photos = [{ url: 'https://via.placeholder.com/800x600?text=Add+Photo', caption: '添加照片' }];
+                saveData();
+            }
+            
+            // 确保text存在
+            if (!location.text) {
+                location.text = '添加你的回忆...';
+                saveData();
+            }
+            
+            // 显示城市名称（英文和中文）
+            document.getElementById('album-city-name').textContent = location.name;
+            document.getElementById('album-city-chinese').textContent = location.chineseName;
+            
+            // 显示照片和导航
+            const mainPhotoContainer = document.getElementById('album-main-photo');
+            
+            // 为大图添加左右滑动功能
+            let currentPhotoIndex = 0;
+            
+            // 更新当前照片
+            function updateCurrentPhoto(index) {
+                currentPhotoIndex = index;
+                const currentPhoto = location.photos[currentPhotoIndex];
+                mainPhotoContainer.innerHTML = `
+                    <div class="photo-navigation">
+                        <button class="nav-button prev">&lt;</button>
+                        <button class="nav-button next">&gt;</button>
+                    </div>
+                    <img src="${currentPhoto.url || currentPhoto}" alt="${location.name}">
+                    ${currentPhoto.caption ? `<div class="photo-caption">${currentPhoto.caption}</div>` : ''}
+                `;
+                
+                // 为新的照片添加缩放功能
+                const newMainPhoto = mainPhotoContainer.querySelector('img');
+                if (newMainPhoto) {
+                    let scale = 1;
+                    const scaleStep = 0.1;
+                    const minScale = 0.5;
+                    const maxScale = 3;
+                    
+                    // 鼠标滚轮缩放
+                    mainPhotoContainer.addEventListener('wheel', (e) => {
+                        e.preventDefault();
+                        const delta = e.deltaY > 0 ? -scaleStep : scaleStep;
+                        scale = Math.max(minScale, Math.min(maxScale, scale + delta));
+                        newMainPhoto.style.transform = `scale(${scale})`;
+                    });
+                    
+                    // 双击重置缩放
+                    mainPhotoContainer.addEventListener('dblclick', () => {
+                        scale = 1;
+                        newMainPhoto.style.transform = `scale(${scale})`;
+                    });
+                }
+                
+                // 添加导航按钮事件
+                const prevButton = mainPhotoContainer.querySelector('.nav-button.prev');
+                const nextButton = mainPhotoContainer.querySelector('.nav-button.next');
+                
+                prevButton.addEventListener('click', () => {
+                    currentPhotoIndex = (currentPhotoIndex - 1 + location.photos.length) % location.photos.length;
+                    updateCurrentPhoto(currentPhotoIndex);
+                });
+                
+                nextButton.addEventListener('click', () => {
+                    currentPhotoIndex = (currentPhotoIndex + 1) % location.photos.length;
+                    updateCurrentPhoto(currentPhotoIndex);
+                });
+                
+                // 添加左右箭头键盘事件
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        currentPhotoIndex = (currentPhotoIndex - 1 + location.photos.length) % location.photos.length;
+                        updateCurrentPhoto(currentPhotoIndex);
+                    } else if (e.key === 'ArrowRight') {
+                        currentPhotoIndex = (currentPhotoIndex + 1) % location.photos.length;
+                        updateCurrentPhoto(currentPhotoIndex);
+                    }
+                });
+            }
+            
+            // 初始显示第一张照片
+            updateCurrentPhoto(0);
+            
+            // 显示文字记忆
+            const textContainer = document.getElementById('album-text');
+            textContainer.textContent = location.text;
+            
+            // 确保返回按钮显示
+            document.getElementById('album-footer').style.display = 'block';
+            document.getElementById('close-album').style.display = 'inline-block';
+            document.getElementById('close-album').style.pointerEvents = 'auto';
+            document.getElementById('close-album').style.zIndex = '9999';
+            
+            // 显示照片数量
+            if (location.photos.length > 1) {
+                showNotification(`已加载 ${location.photos.length} 张照片，可左右滑动浏览！`);
+            }
+        }
+        
+        // 打开编辑模态框
+        function openEditModal() {
+            if (selectedCity) {
+                // 从locations中获取城市数据
+                const location = config.locations.find(loc => loc.name === selectedCity);
+                if (!location) {
+                    showNotification('城市数据不存在！');
+                    return;
+                }
+                
+                // 确保photos数组存在
+                if (!location.photos || !Array.isArray(location.photos)) {
+                    location.photos = [];
+                }
+                
+                const photoList = document.getElementById('photo-list');
+                photoList.innerHTML = '';
+                
+                // 显示现有照片
+                location.photos.forEach((photo, index) => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'photo-item';
+                    photoItem.innerHTML = `
+                        <img src="${photo.url || photo}" alt="回忆照片">
+                        <div class="photo-caption">
+                            <input type="text" class="photo-caption-input" data-index="${index}" value="${photo.caption || ''}" placeholder="添加照片说明...">
+                        </div>
+                        <button class="delete-photo" data-index="${index}">✕</button>
+                    `;
+                    photoList.appendChild(photoItem);
+                });
+                
+                // 移除旧的事件监听器（如果存在）
+                const photoListElement = document.getElementById('photo-list');
+                const newPhotoList = photoListElement.cloneNode(true);
+                photoListElement.parentNode.replaceChild(newPhotoList, photoListElement);
+                
+                // 添加事件委托处理删除照片
+                document.getElementById('photo-list').addEventListener('click', function(e) {
+                    if (e.target.classList.contains('delete-photo')) {
+                        const index = parseInt(e.target.dataset.index);
+                        deletePhoto(index);
+                    }
+                });
+                
+                // 清空添加照片的输入框
+                document.getElementById('new-photo').value = '';
+                document.getElementById('new-quote').value = location.text || '';
+                
+                document.getElementById('edit-modal').style.display = 'flex';
+            }
+        }
+        
+        // 删除照片
+        function deletePhoto(index) {
+            if (selectedCity) {
+                const location = config.locations.find(loc => loc.name === selectedCity);
+                if (location && location.photos && location.photos.length > 1) {
+                    location.photos.splice(index, 1);
+                    saveData();
+                    openEditModal(); // 重新打开模态框以更新照片列表
+                } else {
+                    showNotification('至少需要保留一张照片！');
+                }
+            }
+        }
+        
+
+        
+
+        
+        // 添加照片
+        document.getElementById('add-photo').addEventListener('click', function() {
+            if (selectedCity) {
+                const newPhoto = document.getElementById('new-photo').value;
+                const newPhotoCaption = document.getElementById('new-photo-caption').value;
+                const newQuote = document.getElementById('new-quote').value;
+                
+                if (newPhoto) {
+                    try {
+                        // 从locations中获取城市数据
+                        const location = config.locations.find(loc => loc.name === selectedCity);
+                        if (!location) {
+                            showNotification('城市数据不存在！');
+                            return;
+                        }
+                        
+                        // 确保photos数组存在
+                        if (!location.photos || !Array.isArray(location.photos)) {
+                            location.photos = [];
+                        }
+                        
+                        // 检查照片数量限制（最多10张照片）
+                        if (location.photos.length >= 10) {
+                            showNotification('最多只能添加10张照片！');
+                            return;
+                        }
+                        
+                        // 添加照片
+                        location.photos.push({ url: newPhoto, caption: newPhotoCaption });
+                        
+                        // 更新文字（如果有新的文字）
+                        if (newQuote) {
+                            location.text = newQuote;
+                        }
+                        
+                        // 保存数据
+                        saveData();
+                        showNotification('照片添加成功！');
+                        
+                        // 清空输入框
+                        document.getElementById('new-photo').value = '';
+                        document.getElementById('new-photo-caption').value = '';
+                        document.getElementById('new-quote').value = '';
+                        
+                        // 重新打开模态框以更新照片列表
+                        openEditModal();
+                        
+                    } catch (error) {
+                        showNotification('添加照片失败：' + error.message);
+                        console.error('添加照片失败:', error);
+                    }
+                } else {
+                    showNotification('请输入照片路径！');
+                }
+            } else {
+                showNotification('请先选择城市！');
+            }
+        });
+        
+        // 保存编辑
+        function saveEdit() {
+            if (selectedCity) {
+                const newQuote = document.getElementById('new-quote').value;
+                
+                // 从locations中获取城市数据
+                const location = config.locations.find(loc => loc.name === selectedCity);
+                if (location) {
+                    // 更新文字（如果有新的文字）
+                    if (newQuote) {
+                        location.text = newQuote;
+                    }
+                    
+                    // 更新照片说明
+                    const captionInputs = document.querySelectorAll('.photo-caption-input');
+                    captionInputs.forEach(input => {
+                        const index = parseInt(input.dataset.index);
+                        if (location.photos[index]) {
+                            // 如果照片是字符串，将其转换为对象格式
+                            if (typeof location.photos[index] === 'string') {
+                                location.photos[index] = {
+                                    url: location.photos[index],
+                                    caption: input.value
+                                };
+                            } else {
+                                // 如果照片已经是对象，直接更新caption
+                                location.photos[index].caption = input.value;
+                            }
+                        }
+                    });
+                }
+                
+                saveData();
+                populateAlbum(selectedCity);
+                closeEditModal();
+                showNotification('回忆已更新！');
+            }
+        }
+        
+        // 关闭编辑模态框
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+        
+        // 播放语音消息
+        function playVoiceMessage() {
+            if ('speechSynthesis' in window) {
+                const message = new SpeechSynthesisUtterance();
+                message.text = '嗨，亲爱的朋友！欢迎来到「看世界」。愿你收集每一颗星星，解锁世界的角落，永远保持好奇与热爱。';
+                message.lang = 'zh-CN';
+                message.rate = 1;
+                message.pitch = 1;
+                message.volume = 1;
+                speechSynthesis.speak(message);
+            }
+        }
+        
+        // 加载留言
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            const messageList = document.getElementById('message-list');
+            messageList.innerHTML = '';
+            
+            messages.forEach((message, index) => {
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = `
+                    <div class="nickname">${message.nickname}</div>
+                    <div class="content">${message.content}</div>
+                    <div class="timestamp">${message.timestamp}</div>
+                    <button class="delete-btn" onclick="deleteMessage(${index})">✕</button>
+                `;
+                // 添加漂浮效果
+                bubble.style.animation = 'float 3s ease-in-out infinite';
+                bubble.style.animationDelay = Math.random() * 2 + 's';
+                messageList.appendChild(bubble);
+            });
+        }
+        
+        // 发送留言
+        function sendMessage() {
+            const nickname = document.getElementById('nickname').value;
+            const content = document.getElementById('message-content').value;
+            
+            if (nickname && content) {
+                const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                const timestamp = new Date().toLocaleString();
+                
+                messages.unshift({ nickname, content, timestamp });
+                localStorage.setItem('messages', JSON.stringify(messages));
+                
+                document.getElementById('nickname').value = '';
+                document.getElementById('message-content').value = '';
+                
+                loadMessages();
+                
+                // 创建全屏漂浮效果
+                createFloatingMessage(nickname, content);
+            }
+        }
+        
+        // 创建全屏漂浮消息
+        function createFloatingMessage(nickname, content) {
+            // 创建漂浮元素
+            const floatingMessage = document.createElement('div');
+            floatingMessage.className = 'floating-message';
+            floatingMessage.innerHTML = `
+                <div class="floating-nickname">${nickname}</div>
+                <div class="floating-content">${content}</div>
+            `;
+            
+            // 生成随机水平位置，避免堆叠
+            const randomLeft = Math.random() * 60 + 20; // 20%-80%之间的随机位置
+            
+            // 设置样式
+            floatingMessage.style.position = 'fixed';
+            floatingMessage.style.left = randomLeft + '%';
+            floatingMessage.style.top = '100%';
+            floatingMessage.style.background = 'rgba(255, 255, 255, 0.9)';
+            floatingMessage.style.padding = '20px';
+            floatingMessage.style.borderRadius = '25px';
+            floatingMessage.style.boxShadow = '0 6px 16px rgba(255, 107, 157, 0.4)';
+            floatingMessage.style.zIndex = '1000';
+            floatingMessage.style.maxWidth = '300px';
+            floatingMessage.style.animation = 'floatUp 4s ease-in-out forwards'; // 改为4秒
+            floatingMessage.style.opacity = '0';
+            floatingMessage.style.minWidth = '200px';
+            
+            // 添加到页面
+            document.body.appendChild(floatingMessage);
+            
+            // 4秒后移除
+            setTimeout(() => {
+                document.body.removeChild(floatingMessage);
+            }, 4000);
+        }
+        
+        // 让所有留言浮动显示
+        function floatAllMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            
+            // 按时间顺序（从旧到新）显示留言
+            messages.reverse().forEach((message, index) => {
+                // 每条留言延迟显示，形成连续效果
+                setTimeout(() => {
+                    createFloatingMessage(message.nickname, message.content);
+                }, index * 500); // 每条留言延迟500毫秒
+            });
+        }
+        
+        // 删除留言
+        function deleteMessage(index) {
+            const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+            messages.splice(index, 1);
+            localStorage.setItem('messages', JSON.stringify(messages));
+            loadMessages();
+        }
+        
+        // 显示通知
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            notification.textContent = text;
+            notification.style.opacity = '1';
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+            }, 2000);
+        }
+        
+        // 更新UI
+        function updateUI() {
+            document.getElementById('stars-count').textContent = `⭐ 星尘: ${starCount}`;
+            document.getElementById('cities-count').textContent = `🎯 解锁城市: ${citiesUnlocked}/${config.locations.length}`;
+        }
+        
+        // 窗口大小调整
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 地球自转
+            earth.rotation.y += 0.001;
+            
+            // 星星运动（减慢速度）
+            stars.forEach(star => {
+                star.position.x += (Math.random() - 0.5) * 0.002;
+                star.position.y += (Math.random() - 0.5) * 0.002;
+                star.position.z += (Math.random() - 0.5) * 0.002;
+                
+                // 边界检查
+                if (Math.abs(star.position.x) > 2.5 || Math.abs(star.position.y) > 2.5 || Math.abs(star.position.z) > 2.5) {
+                    star.position.set(
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5
+                    );
+                }
+            });
+            
+            // 雪花运动（减慢速度）
+            snowflakes.forEach(snowflake => {
+                snowflake.position.x += (Math.random() - 0.5) * 0.001;
+                snowflake.position.y += (Math.random() - 0.5) * 0.001;
+                snowflake.position.z += (Math.random() - 0.5) * 0.001;
+                
+                // 边界检查
+                if (Math.abs(snowflake.position.x) > 2.5 || Math.abs(snowflake.position.y) > 2.5 || Math.abs(snowflake.position.z) > 2.5) {
+                    snowflake.position.set(
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5
+                    );
+                }
+            });
+            
+            // 星尘粒子运动
+            stardustArray.forEach(stardust => {
+                stardust.position.x += stardust.velocity.x;
+                stardust.position.y += stardust.velocity.y;
+                stardust.position.z += stardust.velocity.z;
+                
+                // 边界检查
+                if (Math.abs(stardust.position.x) > 2.5 || Math.abs(stardust.position.y) > 2.5 || Math.abs(stardust.position.z) > 2.5) {
+                    stardust.position.set(
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5,
+                        (Math.random() - 0.5) * 5
+                    );
+                    stardust.velocity = {
+                        x: (Math.random() - 0.5) * 0.005,
+                        y: (Math.random() - 0.5) * 0.005,
+                        z: (Math.random() - 0.5) * 0.005
+                    };
+                }
+            });
+            
+            // 更新控制器
+            controls.update();
+            
+            // 渲染场景
+            renderer.render(scene, camera);
+        }
+        
+        // 检查是否所有城市都已解锁
+        function checkAllCitiesUnlocked() {
+            const allUnlocked = config.locations.every(location => location.unlocked);
+            if (allUnlocked) {
+                createTravelPath();
+            }
+        }
+        
+        // 创建旅行轨迹
+        function createTravelPath() {
+            // 获取所有已解锁城市的坐标
+            const unlockedCities = config.locations.filter(location => location.unlocked);
+            if (unlockedCities.length < 2) return;
+            
+            // 准备轨迹点
+            const points = [];
+            unlockedCities.forEach(location => {
+                const lat = (90 - location.coordinates[0]) * Math.PI / 180;
+                const lng = location.coordinates[1] * Math.PI / 180;
+                const radius = 1.21;
+                
+                const x = radius * Math.sin(lat) * Math.cos(lng);
+                const y = radius * Math.cos(lat);
+                const z = radius * Math.sin(lat) * Math.sin(lng);
+                
+                points.push(new THREE.Vector3(x, y, z));
+            });
+            
+            // 创建轨迹线
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xffff00,
+                transparent: true,
+                opacity: 0.8,
+                linewidth: 2
+            });
+            
+            const line = new THREE.Line(lineGeometry, lineMaterial);
+            scene.add(line);
+            
+            // 创建轨迹上的发光节点
+            points.forEach((point, index) => {
+                const nodeGeometry = new THREE.SphereGeometry(0.03, 16, 16);
+                const nodeMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xffff00,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+                node.position.copy(point);
+                scene.add(node);
+            });
+        }
+        
+        // 更新旅行轨迹
+        function updateTravelPath() {
+            // 清除现有的轨迹线
+            if (travelPathLine) {
+                scene.remove(travelPathLine);
+                travelPathLine = null;
+            }
+            
+            // 如果访问的城市少于2个，不创建轨迹线
+            if (visitedCities.length < 2) return;
+            
+            // 准备轨迹点
+            const points = [];
+            visitedCities.forEach(cityName => {
+                const location = config.locations.find(loc => loc.name === cityName);
+                if (location) {
+                    const lat = (90 - location.coordinates[0]) * Math.PI / 180;
+                    const lng = location.coordinates[1] * Math.PI / 180;
+                    const radius = 1.21;
+                    
+                    const x = radius * Math.sin(lat) * Math.cos(lng);
+                    const y = radius * Math.cos(lat);
+                    const z = radius * Math.sin(lat) * Math.sin(lng);
+                    
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+            });
+            
+            // 创建轨迹线
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xffff00,
+                transparent: true,
+                opacity: 0.8,
+                linewidth: 2
+            });
+            
+            travelPathLine = new THREE.Line(lineGeometry, lineMaterial);
+            scene.add(travelPathLine);
+        }
+        
+        // 销毁地球场景
+        function destroyEarthScene() {
+            if (scene) {
+                // 移除所有对象
+                scene.traverse(object => {
+                    if (object.geometry) object.geometry.dispose();
+                    if (object.material) {
+                        if (Array.isArray(object.material)) {
+                            object.material.forEach(material => material.dispose());
+                        } else {
+                            object.material.dispose();
+                        }
+                    }
+                });
+                
+                // 移除渲染器
+                if (renderer) {
+                    renderer.dispose();
+                    document.getElementById('earth-container').innerHTML = '';
+                }
+                
+                // 隐藏按钮和标语
+                document.getElementById('add-city-button').style.display = 'none';
+                document.getElementById('upload-wishes-button').style.display = 'none';
+                document.getElementById('slogan').style.display = 'none';
+                
+                // 移除事件监听器
+                window.removeEventListener('resize', onWindowResize);
+            }
+        }
+        
+        // 点击星星和雪花
+        document.addEventListener('click', (event) => {
+            // 检查是否点击了星星
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            
+            // 检测星星
+            const starIntersects = raycaster.intersectObjects(stars);
+            if (starIntersects.length > 0) {
+                const star = starIntersects[0].object;
+                starCount++;
+                saveData();
+                updateUI();
+                
+                // 重新生成星星
+                star.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+                
+                showNotification('✨ 获得一颗星尘！');
+            }
+            
+            // 检测雪花
+            const snowflakeIntersects = raycaster.intersectObjects(snowflakes);
+            if (snowflakeIntersects.length > 0) {
+                const snowflake = snowflakeIntersects[0].object;
+                
+                // 显示随机祝福
+                const wish = config.wishes[Math.floor(Math.random() * config.wishes.length)];
+                showNotification(wish);
+                
+                // 重新生成雪花
+                snowflake.position.set(
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 5
+                );
+            }
+        });
+        
+        // 编辑城市
+        function editCity(city, index) {
+            // 填充表单
+            document.getElementById('edit-city-name').value = city.name;
+            document.getElementById('edit-city-lat').value = city.coordinates[0];
+            document.getElementById('edit-city-lng').value = city.coordinates[1];
+            document.getElementById('edit-city-stars').value = city.starsRequired;
+            document.getElementById('edit-city-size').value = city.labelSize || 18; // 默认标签大小
+            
+            // 存储当前编辑的城市索引
+            window.currentEditingCity = index;
+            
+            // 显示模态框
+            document.getElementById('edit-city-modal').style.display = 'flex';
+        }
+        
+        // 保存城市编辑
+        document.getElementById('save-city-edit').addEventListener('click', function() {
+            const index = window.currentEditingCity;
+            if (index !== undefined) {
+                const city = config.locations[index];
+                
+                // 更新城市信息
+                city.name = document.getElementById('edit-city-name').value || city.name;
+                city.coordinates[0] = parseFloat(document.getElementById('edit-city-lat').value) || city.coordinates[0];
+                city.coordinates[1] = parseFloat(document.getElementById('edit-city-lng').value) || city.coordinates[1];
+                city.starsRequired = parseInt(document.getElementById('edit-city-stars').value) || city.starsRequired;
+                city.labelSize = parseInt(document.getElementById('edit-city-size').value) || 18; // 保存标签大小
+                
+                // 保存数据
+                saveData();
+                
+                // 重新创建城市标记
+                recreateCityMarkers();
+                
+                // 关闭模态框
+                document.getElementById('edit-city-modal').style.display = 'none';
+                window.currentEditingCity = undefined;
+                
+                showNotification('城市信息已更新！');
+            }
+        });
+        
+        // 取消城市编辑
+        document.getElementById('cancel-city-edit').addEventListener('click', function() {
+            document.getElementById('edit-city-modal').style.display = 'none';
+            window.currentEditingCity = undefined;
+        });
+        
+        // 删除城市
+        document.getElementById('delete-city').addEventListener('click', function() {
+            const index = window.currentEditingCity;
+            if (index !== undefined) {
+                if (confirm('确定要删除这个城市吗？')) {
+                    // 删除城市
+                    config.locations.splice(index, 1);
+                    
+                    // 保存数据
+                    saveData();
+                    
+                    // 重新创建城市标记
+                    recreateCityMarkers();
+                    
+                    // 关闭模态框
+                    document.getElementById('edit-city-modal').style.display = 'none';
+                    window.currentEditingCity = undefined;
+                    
+                    showNotification('城市已删除！');
+                }
+            }
+        });
+        
+        // 重新创建城市标记
+        function recreateCityMarkers() {
+            // 清除现有标记
+            cityMarkers.forEach(marker => {
+                scene.remove(marker);
+            });
+            cityMarkers = [];
+            
+            // 重新创建标记
+            createCityMarkers();
+        }
+        
+        // 初始化应用
+        window.onload = init;
+    </script>
+</body>
+>>>>>>> 363961aae4a3d18ef076bc01a9b6dd54fba1fa8e
 </html>
